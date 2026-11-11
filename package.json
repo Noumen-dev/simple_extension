@@ -19,6 +19,7 @@
     "nodes",
     "vault",
     "scripts",
+    ".fragmenta",
     "Dockerfile",
     "docker-compose.yaml",
     "deployment_manifest.json",
@@ -35,7 +36,13 @@
       "constraints": {
         "notations": "noumen.workflow-orchestrator"
       }
-    }
+    },
+    "skills": [
+      {
+        "name": "writing-factory-node",
+        "path": ".fragmenta/skills/writing-factory-node"
+      }
+    ]
   },
   "extensionDependencies": {
     "noumen.workflow-orchestrator": "^0.0.0"
