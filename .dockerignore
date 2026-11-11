@@ -1,0 +1,11 @@
+.fragmenta
+.git
+**/__pycache__
+**/*.pyc
+**/.venv
+**/venv
+scripts
+Makefile
+README.md
+*.md
+.dockerignore

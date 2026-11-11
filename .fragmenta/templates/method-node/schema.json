@@ -1,0 +1,164 @@
+{
+  "type": "{{NodeName}}",
+  "kind": "class",
+  "metadata": {
+    "displayName": "{{displayName}}",
+    "icon": "Box"
+  },
+  "ports": {
+    "inputs": [
+      {
+        "type": "signal",
+        "key": "execute",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "items",
+        "displayName": "Items",
+        "dataType": "array",
+        "required": true,
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "type": "signal",
+        "key": "next",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "result",
+        "displayName": "Result",
+        "dataType": "object",
+        "data": {
+          "isNode": true
+        },
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      }
+    ]
+  },
+  "ui": {
+    "type": "default"
+  },
+  "data": {
+    "type": "{{NodeName}}",
+    "language": "python",
+    "package": "caia_core",
+    "version": "1.0.0",
+    "deprecated": false,
+    "description": "{{description}}",
+    "tags": [
+      "{{tag}}"
+    ],
+    "category": "{{category}}"
+  },
+  "parameters": {
+    "method": {
+      "displayName": "Method",
+      "control": {
+        "kind": "enum",
+        "options": [
+          {
+            "value": "process",
+            "label": "process"
+          }
+        ]
+      },
+      "defaultValue": "process"
+    },
+    "timeout": {
+      "displayName": "Timeout",
+      "control": {
+        "kind": "number"
+      },
+      "defaultValue": 10
+    }
+  },
+  "effects": {
+    "parameters": {
+      "method": {
+        "process": {
+          "ports": {
+            "inputs": [
+              {
+                "type": "signal",
+                "key": "execute",
+                "connectionRules": {
+                  "requireSameType": true,
+                  "requireSameDataType": false,
+                  "allowMultipleOutputs": true,
+                  "allowMultipleInputs": true
+                }
+              },
+              {
+                "type": "data",
+                "key": "items",
+                "displayName": "Items",
+                "dataType": "array",
+                "required": true,
+                "connectionRules": {
+                  "requireSameType": true,
+                  "requireSameDataType": false,
+                  "allowMultipleOutputs": true,
+                  "allowMultipleInputs": true
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "type": "signal",
+                "key": "next",
+                "connectionRules": {
+                  "requireSameType": true,
+                  "requireSameDataType": false,
+                  "allowMultipleOutputs": true,
+                  "allowMultipleInputs": true
+                }
+              },
+              {
+                "type": "data",
+                "key": "result",
+                "displayName": "Result",
+                "dataType": "object",
+                "data": {
+                  "isNode": true
+                },
+                "connectionRules": {
+                  "requireSameType": true,
+                  "requireSameDataType": false,
+                  "allowMultipleOutputs": true,
+                  "allowMultipleInputs": true
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "code": {
+    "path": "{{node_name}}.py"
+  }
+}

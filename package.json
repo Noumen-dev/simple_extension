@@ -1,0 +1,44 @@
+{
+  "name": "email_ketchup",
+  "publisher": "yuri_dinboxru",
+  "version": "0.2.2",
+  "displayName": "Mail & Excel Nodes",
+  "description": "Read-only IMAP ingestion and raw Excel extraction",
+  "main": "extension.js",
+  "scripts": {
+    "schemas": "node scripts/configure-mail-excel.mjs",
+    "check": "node scripts/check-mail-excel.mjs"
+  },
+  "engines": {
+    "sdk": ">=0.3.0"
+  },
+  "files": [
+    "extension.js",
+    "index.json",
+    "gofactory-server-linux-amd64",
+    "nodes",
+    "vault",
+    "scripts",
+    "Dockerfile",
+    "docker-compose.yaml",
+    "deployment_manifest.json",
+    ".dockerignore",
+    "package.json",
+    "Makefile",
+    "README.md"
+  ],
+  "contributes": {
+    "nodes": {
+      "label": "orchestratornodes",
+      "name": "orchestratornodes",
+      "path": "nodes",
+      "constraints": {
+        "notations": "noumen.workflow-orchestrator"
+      }
+    }
+  },
+  "extensionDependencies": {
+    "noumen.workflow-orchestrator": "^0.0.0"
+  },
+  "deployment_json_path": "deployment_manifest.json"
+}

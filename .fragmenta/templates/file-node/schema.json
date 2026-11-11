@@ -1,0 +1,77 @@
+{
+  "type": "{{NodeName}}",
+  "kind": "class",
+  "metadata": {
+    "displayName": "{{displayName}}",
+    "icon": "File"
+  },
+  "ports": {
+    "inputs": [
+      {
+        "type": "signal",
+        "key": "execute",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "file",
+        "displayName": "file",
+        "dataType": "file",
+        "required": true,
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "type": "signal",
+        "key": "next",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "file",
+        "displayName": "file",
+        "dataType": "file",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      }
+    ]
+  },
+  "ui": {
+    "type": "default"
+  },
+  "data": {
+    "type": "{{NodeName}}",
+    "language": "python",
+    "package": "caia_core",
+    "version": "1.0.0",
+    "deprecated": false,
+    "description": "{{description}}",
+    "tags": [
+      "File"
+    ],
+    "category": "File"
+  },
+  "code": {
+    "path": "{{node_name}}.py"
+  }
+}

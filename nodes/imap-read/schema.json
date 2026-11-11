@@ -1,0 +1,325 @@
+{
+  "type": "IMAPReadNode",
+  "kind": "class",
+  "metadata": {
+    "displayName": "IMAP Read",
+    "description": "Читает письма и вложения без изменения ящика",
+    "icon": "Mail"
+  },
+  "ports": {
+    "inputs": [
+      {
+        "type": "signal",
+        "key": "execute",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "credentials",
+        "displayName": "credentials",
+        "dataType": "object",
+        "description": "Подключение к IMAPS через Credentials",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        },
+        "required": true,
+        "schema": {
+          "type": "object",
+          "required": [
+            "host",
+            "username",
+            "password"
+          ],
+          "properties": {
+            "host": {
+              "type": "string",
+              "title": "Host"
+            },
+            "port": {
+              "type": "integer",
+              "title": "Port",
+              "minimum": 1,
+              "maximum": 65535,
+              "default": 993
+            },
+            "username": {
+              "type": "string",
+              "title": "Username"
+            },
+            "password": {
+              "type": "string",
+              "title": "Password"
+            }
+          }
+        }
+      },
+      {
+        "type": "data",
+        "key": "folder",
+        "displayName": "folder",
+        "dataType": "string",
+        "description": "Папка почтового ящика",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        },
+        "defaultValue": "INBOX"
+      },
+      {
+        "type": "data",
+        "key": "rules",
+        "displayName": "rules",
+        "dataType": "array",
+        "description": "Точный отправитель и подстроки темы; пустой список — все письма",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        },
+        "defaultValue": [],
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "sender",
+              "subjects"
+            ],
+            "properties": {
+              "sender": {
+                "type": "string",
+                "title": "Sender"
+              },
+              "subjects": {
+                "type": "array",
+                "title": "Subjects",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "data",
+        "key": "checkpoint",
+        "displayName": "checkpoint",
+        "dataType": "object",
+        "description": "Последний надёжно записанный UID; пустое значение — начало истории",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        },
+        "schema": {
+          "type": "object",
+          "required": [
+            "uidvalidity",
+            "last_committed_uid"
+          ],
+          "properties": {
+            "uidvalidity": {
+              "type": "string",
+              "title": "UIDVALIDITY"
+            },
+            "last_committed_uid": {
+              "type": "integer",
+              "title": "Committed UID",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "type": "signal",
+        "key": "next",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "status",
+        "displayName": "status",
+        "dataType": "string",
+        "description": "ok, blocked или recovery_required",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "messages",
+        "displayName": "messages",
+        "dataType": "array",
+        "description": "Письма с метаданными, хешами и адресами частей внутри архива",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "archive",
+        "displayName": "archive",
+        "dataType": "file",
+        "description": "ZIP: manifest.json, исходные MIME, текст и все вложения",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "candidate_checkpoint",
+        "displayName": "candidate_checkpoint",
+        "dataType": "object",
+        "description": "Кандидат; фиксировать только после надёжной записи всего пакета",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        },
+        "schema": {
+          "uidvalidity": "string",
+          "last_committed_uid": "number"
+        }
+      },
+      {
+        "type": "data",
+        "key": "checkpoint_committed",
+        "displayName": "checkpoint_committed",
+        "dataType": "boolean",
+        "description": "Всегда false: нода не сохраняет checkpoint",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "has_more",
+        "displayName": "has_more",
+        "dataType": "boolean",
+        "description": "Остались UID для следующей страницы",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "diagnostics",
+        "displayName": "diagnostics",
+        "dataType": "object",
+        "description": "Счётчики и причина остановки",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      }
+    ]
+  },
+  "ui": {
+    "type": "default"
+  },
+  "parameters": {
+    "batch_size": {
+      "displayName": "Batch size",
+      "description": "Максимум проверяемых писем за вызов",
+      "defaultValue": 25,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "max_message_bytes": {
+      "displayName": "Max message bytes",
+      "description": "Максимальный размер исходного MIME",
+      "defaultValue": 40000000,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "max_attachment_bytes": {
+      "displayName": "Max attachment bytes",
+      "description": "Максимальный размер одного декодированного вложения",
+      "defaultValue": 30000000,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "max_batch_bytes": {
+      "displayName": "Max batch bytes",
+      "description": "Максимум загружаемых байтов MIME за вызов",
+      "defaultValue": 80000000,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "max_attachments": {
+      "displayName": "Max attachments",
+      "description": "Максимум вложений в одном письме",
+      "defaultValue": 100,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "max_metadata_bytes": {
+      "displayName": "Max metadata bytes",
+      "description": "Предел JSON-метаданных; оригиналы остаются в архиве",
+      "defaultValue": 262144,
+      "control": {
+        "kind": "number"
+      }
+    }
+  },
+  "data": {
+    "type": "IMAPReadNode",
+    "language": "python",
+    "package": "mail_excel",
+    "version": "0.2.0",
+    "description": "Читает письма и вложения без изменения ящика",
+    "tags": [
+      "Mail"
+    ],
+    "category": "Mail"
+  },
+  "code": {
+    "path": "imap_read_node.py"
+  },
+  "docs": {
+    "path": "README.md"
+  }
+}

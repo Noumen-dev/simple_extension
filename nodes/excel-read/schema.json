@@ -1,0 +1,293 @@
+{
+  "type": "ExcelReadNode",
+  "kind": "class",
+  "metadata": {
+    "displayName": "Excel Read",
+    "description": "Извлекает исходные ячейки, формулы и объединённые диапазоны",
+    "icon": "Sheet"
+  },
+  "ports": {
+    "inputs": [
+      {
+        "type": "signal",
+        "key": "execute",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "file",
+        "displayName": "file",
+        "dataType": "file",
+        "description": "Excel-файл или ZIP-пакет IMAP; для ZIP задайте attachment",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "attachment",
+        "displayName": "attachment",
+        "dataType": "object",
+        "description": "Вложение: метаданные IMAP или материализованный file-объект",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "archive_entry",
+        "displayName": "archive_entry",
+        "dataType": "string",
+        "description": "Необязательный путь вложения внутри ZIP-пакета",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        },
+        "defaultValue": ""
+      }
+    ],
+    "outputs": [
+      {
+        "type": "signal",
+        "key": "next",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "status",
+        "displayName": "status",
+        "dataType": "string",
+        "description": "Состояние чтения",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "cells_file",
+        "displayName": "cells_file",
+        "dataType": "file",
+        "description": "Полная выгрузка JSONL: листы, ячейки, формулы, объединения и предупреждения",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "source",
+        "displayName": "source",
+        "dataType": "object",
+        "description": "Имя, идентификатор и SHA256 исходного файла",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        },
+        "schema": {
+          "filename": "string",
+          "attachment_id": "string",
+          "sha256": "string"
+        }
+      },
+      {
+        "type": "data",
+        "key": "cell_count",
+        "displayName": "cell_count",
+        "dataType": "number",
+        "description": "Количество извлечённых непустых ячеек",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "cells",
+        "displayName": "cells",
+        "dataType": "array",
+        "description": "Ограниченный просмотр ячеек; полные данные в cells_file",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "preview_truncated",
+        "displayName": "preview_truncated",
+        "dataType": "boolean",
+        "description": "Просмотр содержит не все ячейки",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "warnings",
+        "displayName": "warnings",
+        "dataType": "array",
+        "description": "Первые 50 предупреждений; полный список в cells_file",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "warning_counts",
+        "displayName": "warning_counts",
+        "dataType": "object",
+        "description": "Количество предупреждений каждого типа",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "errors",
+        "displayName": "errors",
+        "dataType": "array",
+        "description": "Ошибки чтения",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "schema_version",
+        "displayName": "schema_version",
+        "dataType": "string",
+        "description": "Версия формата JSONL",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      },
+      {
+        "type": "data",
+        "key": "memory_limit_enforced",
+        "displayName": "memory_limit_enforced",
+        "dataType": "boolean",
+        "description": "Применён системный лимит адресного пространства процесса",
+        "connectionRules": {
+          "requireSameType": true,
+          "requireSameDataType": false,
+          "allowMultipleOutputs": true,
+          "allowMultipleInputs": true
+        }
+      }
+    ]
+  },
+  "ui": {
+    "type": "default"
+  },
+  "parameters": {
+    "max_file_bytes": {
+      "displayName": "Max file bytes",
+      "description": "Максимальный размер исходного Excel-файла",
+      "defaultValue": 40000000,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "max_cells": {
+      "displayName": "Max cells",
+      "description": "Максимум ячеек; для XLS также предел площади листов",
+      "defaultValue": 1000000,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "max_uncompressed_bytes": {
+      "displayName": "Max expanded bytes",
+      "description": "Предел суммарного распакованного размера OOXML",
+      "defaultValue": 64000000,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "max_result_bytes": {
+      "displayName": "Max result bytes",
+      "description": "Максимальный размер полной выгрузки JSONL",
+      "defaultValue": 100000000,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "max_memory_bytes": {
+      "displayName": "Max memory bytes",
+      "description": "Предел адресного пространства Unix-runner; на Windows действуют лимиты файлов и ячеек",
+      "defaultValue": 512000000,
+      "control": {
+        "kind": "number"
+      }
+    },
+    "preview_cells": {
+      "displayName": "Preview cells",
+      "description": "Максимум ячеек в JSON-просмотре; также действует предел 64 КиБ",
+      "defaultValue": 20,
+      "control": {
+        "kind": "number"
+      }
+    }
+  },
+  "data": {
+    "type": "ExcelReadNode",
+    "language": "python",
+    "package": "mail_excel",
+    "version": "0.2.0",
+    "description": "Извлекает исходные ячейки, формулы и объединённые диапазоны",
+    "tags": [
+      "File"
+    ],
+    "category": "File"
+  },
+  "code": {
+    "path": "excel_read_node.py"
+  },
+  "docs": {
+    "path": "README.md"
+  }
+}

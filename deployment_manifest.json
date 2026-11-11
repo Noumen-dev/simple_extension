@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "agent": {
+    "image": "cli-agent-base:latest",
+    "build": {
+      "context": ".",
+      "dockerfile": "Dockerfile",
+      "tag": "cli-agent-base:latest"
+    },
+    "env": {
+      "AGENT_HTTP_ADDR": ":7677",
+      "ENV_FILE_PATH": "vault/env",
+      "EXTENSIONS_MANIFEST_PATH": "deployment_manifest.json"
+    }
+  },
+  "extension": {
+    "image": "cli-agent:mail-excel-nodes-extension",
+    "ext_id": 0,
+    "url": "",
+    "app_name": "mail-excel-nodes",
+    "domain": "",
+    "build": {
+      "context": ".",
+      "dockerfile": "Dockerfile",
+      "tag": "cli-agent:mail-excel-nodes-extension",
+      "args": {
+        "BASE_IMAGE": "cli-agent-base:latest"
+      }
+    },
+    "env": {
+      "PYTHONPATH": ".:node_sdk:nodes",
+      "NODE_SERVER_PORT": "7677"
+    }
+  }
+}

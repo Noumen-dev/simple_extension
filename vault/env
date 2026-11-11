@@ -1,0 +1,8 @@
+# Переменные для golang_factory (config/config.go).
+# Копируется в образ как дефолтный .env; при docker compose монтируется свой .env поверх.
+GOLANG_FACTORY_NODES_DIR=/app/golang_factory/nodes
+GOLANG_FACTORY_NODE_WORKDIR=/app
+GOLANG_FACTORY_PYTHON_EXEC=python3
+GOLANG_FACTORY_TS_EXEC=node
+GOLANG_FACTORY_NODE_TIMEOUT_SEC=300
+# GOLANG_FACTORY_PYTHON_EXTRA_PATH=  # опционально

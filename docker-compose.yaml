@@ -1,0 +1,12 @@
+services:
+  mail-excel-factory:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7677:7677"
+    networks:
+      - orchestrator-network
+networks:
+  orchestrator-network:
+    external: true
